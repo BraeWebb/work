@@ -1,0 +1,83 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body{
+        font: normal 12px verdana, Arial, Helvetica, sans-serif;
+        padding: 0px 10px;
+    }
+    h1{
+        font: normal 32px Arial, Helvetica, sans-serif;
+        padding: 20px 20px;
+        padding-top: 5px;
+        border-bottom: 1px solid rgb(238, 238, 238);
+    }
+    h4{
+        font: normal 18px Arial, Helvetica, sans-serif;
+        margin: 5px 0px;
+    }
+    h5{
+        font: normal 14px Arial, Helvetica, sans-serif;
+        margin: 5px 0px;
+    }
+    th{
+        font-size: 18px;
+        border-bottom: 1px black solid;
+        padding-top: 10px;
+    }
+    td{
+        border-right: 1px black solid;
+        padding-top: 5px;
+    }
+
+    #paypeople td{
+        border: 1px black solid;
+    }
+    #items{
+        border-collapse: collapse;
+    }
+    #items td,th{
+        border: 1px black solid;
+    }
+</style>
+</head>
+<body>
+<h1>TAX INVOICE</h1>
+<p>Issue Date: {{ invoice.get_date() }}</p>
+<p>Invoice Number: {{ invoice.get_name() }}</p>
+<table id="paypeople">
+    <tr>
+        <td>
+            <h3>Payer: {{ invoice.get_payer() }}</h3>
+            <p>{{ invoice.get_payer().get_address() }}</p>
+        </td>
+        <td>
+            <h3>Payee: {{ invoice.get_payee() }}</h3>
+            <p>{{ invoice.get_payee().get_address() }}</p>
+        </td>
+    </tr>
+</table>
+<h4>No GST Applied</h4>
+
+<table id="items">
+    <tr>
+        <th>Date</th>
+        <th>Item Code</th>
+        <th>Description of Service</th>
+        <th>Charge</th>
+    </tr>
+    {% for item in invoice.get_items() %}
+        <tr>
+        <td>{{ item.get_date() }}</td>
+        <td>{{ item.get_id() }}</td>
+        <td>{{ item.get_description() }}</td>
+        <td>{{ item.get_amount() }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3"><strong>TOTAL</strong></td>
+        <td><strong>${{ invoice.get_amount() }}</strong></td>
+    </tr>
+</table>
+
+{{ invoice.get_biller_details()|safe }}
+</body>

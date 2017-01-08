@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoices</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">Invoices</li>
+        </ol>
+        <div class="page-header">
+            <h1>
+                Invoice List
+                <a type="button" href="/invoice/log" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus"></span></a>
+                <a type="button" href="/item/log" class="btn btn-default pull-right"><span class="glyphicon glyphicon-check"></span></a>
+            </h1>
+        </div>
+        {% for invoice in invoices %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Invoice {{ invoice.get_name() }}
+                    <div class="btn-group btn-group-xs pull-right">
+                        <a type="button" href="/invoice/{{ invoice.get_id() }}" class="btn btn-default"><span class="glyphicon glyphicon-link"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.get_id() }}.pdf" class="btn btn-default"><span class="glyphicon glyphicon-file"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.get_id() }}/download" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.get_id() }}/email" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    Date: {{ invoice.get_date() }} <br/>
+                    Amount: ${{ invoice.get_amount() }} <br/>
+                    Payer: {{ invoice.get_payer() }} <br/>
+                    Payee: {{ invoice.get_payee() }} <br/>
+                </div>
+                <ul class="list-group">
+                    {% for item in invoice.get_items()|sort(reverse = True) %}
+                        <li class="list-group-item">
+                            <span class="label label-success">${{ item.get_amount() }}</span>
+                            <span class="badge">{{ item.get_date() }}</span>
+                            {{ item.get_description() }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

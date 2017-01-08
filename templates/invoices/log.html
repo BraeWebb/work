@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Invoice</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/invoices">Invoices</a></li>
+            <li class="active">Log Invoice</li>
+        </ol>
+        <div class="page-header">
+            <h1>Log Invoice</h1>
+        </div>
+        <form class="form-horizontal" action="/api/log/invoice" method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-calendar"></span>
+                    <input type="text" class="form-control" name="date" placeholder="Date" value="{{ date }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="payer">
+                    {% for person in people %}
+                        <option value="{{ person.get_name() }}">{{ person.get_name() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="payee">
+                    {% for person in people %}
+                        <option value="{{ person.get_name() }}">{{ person.get_name() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% for item in items %}
+                <div class="checkbox">
+                    <label>
+                        <input name="items" type="checkbox" value="{{ item.get_id() }}">
+                        {{ item.get_description() }}
+                    </label>
+                </div>
+            {% endfor %}
+            <br/>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Log</button>
+        </form>
+    </div>
+</body>
+</html>
