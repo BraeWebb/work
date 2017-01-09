@@ -22,6 +22,26 @@ def api_log_invoice():
                              request.form.get('payee'), request.form.getlist('items'))
     return redirect('/invoice/{}'.format(invoice.get_id()))
 
+@app.route('/statistics')
+def invoice_stats():
+    return render_template('statistics.html')
+
+@app.route('/statistics/invoices.svg')
+def generate_statistics_invoices():
+    canvas = Invoice.statistics()
+    canvas.savefig('invoices.svg')
+    with open('invoices.svg', 'rb') as img:
+        return img.read(), 200, {'Content-Type': 'image/svg+xml',
+                                 'Content-Disposition': 'attachment; filename="invoices.svg"'}
+
+@app.route('/statistics/items.svg')
+def generate_statistics_items():
+    canvas = Item.statistics()
+    canvas.savefig('items.svg')
+    with open('items.svg', 'rb') as img:
+        return img.read(), 200, {'Content-Type': 'image/svg+xml',
+                                 'Content-Disposition': 'attachment; filename="items.svg"'}
+
 def render(url, **funcs):
     def inner_render(**args):
         for key, arg in args.items():

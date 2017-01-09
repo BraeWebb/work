@@ -1,5 +1,8 @@
 from flask import render_template
 from xhtml2pdf import pisa
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import pylab
 
 import config
 from database import database
@@ -85,3 +88,15 @@ class Invoice(object):
             email.set_body(body)
             email.send()
         return 'Email Sent!'
+
+    @staticmethod
+    def statistics():
+        dates = []
+        costs = []
+        pylab.figure()
+        for invoice in Invoice.get_all():
+            dates.append(invoice.get_date())
+            costs.append(invoice.get_amount())
+        pylab.legend(('Invoice Amounts', ))
+        pylab.plot(dates, costs)
+        return pylab

@@ -1,5 +1,7 @@
 from database import database
 
+import pylab
+
 class Item(object):
     def __init__(self, item_code):
         self.item_code = item_code
@@ -16,6 +18,11 @@ class Item(object):
             db.commit('INSERT INTO items (item_code, date, description, charge) VALUES (%s, %s, %s, %s)',
                       id, date, description, charge)
         return Item(id)
+
+    @staticmethod
+    def get_all():
+        with database() as db:
+            return [Item(item[0]) for item in db.query('SELECT item_code FROM items')]
 
     @staticmethod
     def get_unlogged():
@@ -36,3 +43,15 @@ class Item(object):
 
     def __lt__(self, other):
         return self.get_date() < other.get_date()
+
+    @staticmethod
+    def statistics():
+        dates = []
+        costs = []
+        pylab.figure()
+        for item in sorted(Item.get_all()):
+            dates.append(item.get_date())
+            costs.append(item.get_amount())
+        pylab.legend(('Item Charges', ))
+        pylab.plot(dates, costs)
+        return pylab
