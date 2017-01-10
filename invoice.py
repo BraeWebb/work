@@ -1,7 +1,5 @@
 from flask import render_template
 from xhtml2pdf import pisa
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import pylab
 
 import config
