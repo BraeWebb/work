@@ -56,7 +56,7 @@ app.add_url_rule('/invoice/<invoice>/download', 'download_invoice_pdf', lambda i
 app.add_url_rule('/invoice/<invoice>/email', 'email_invoice', render('invoices/email.html', invoice=Invoice))
 app.add_url_rule('/item/log', 'log_item', lambda: render_template('items/log.html', date=date.today()))
 app.add_url_rule('/invoice/log', 'log_invoice', lambda: render_template('invoices/log.html', date=date.today(), people=Person.get_all(), items=Item.get_unlogged()))
-app.add_url_rule('/api/email/invoice/<invoice>', 'send_email_invoice', lambda invoice: Invoice(invoice).email(request.form.get('body')))
+app.add_url_rule('/api/email/invoice/<invoice>', 'send_email_invoice', lambda invoice: Invoice(invoice).email(request.form.get('body')), methods=['POST'])
 
 if __name__ == '__main__':
     app.run(debug=True)
