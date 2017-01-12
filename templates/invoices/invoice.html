@@ -42,17 +42,17 @@
 </head>
 <body>
 <h1>TAX INVOICE</h1>
-<p>Issue Date: {{ invoice.get_date() }}</p>
-<p>Invoice Number: {{ invoice.get_name() }}</p>
+<p>Issue Date: {{ invoice.date }}</p>
+<p>Invoice Number: {{ invoice.name }}</p>
 <table id="paypeople">
     <tr>
         <td>
-            <h3>Payer: {{ invoice.get_payer() }}</h3>
-            <p>{{ invoice.get_payer().get_address() }}</p>
+            <h3>Payer: {{ invoice.payer }}</h3>
+            <p>{{ invoice.payer.get_address() }}</p>
         </td>
         <td>
-            <h3>Payee: {{ invoice.get_payee() }}</h3>
-            <p>{{ invoice.get_payee().get_address() }}</p>
+            <h3>Payee: {{ invoice.payee }}</h3>
+            <p>{{ invoice.payee.get_address() }}</p>
         </td>
     </tr>
 </table>
@@ -65,7 +65,7 @@
         <th>Description of Service</th>
         <th>Charge</th>
     </tr>
-    {% for item in invoice.get_items() %}
+    {% for item in invoice.items %}
         <tr>
         <td>{{ item.get_date() }}</td>
         <td>{{ item.get_id() }}</td>
@@ -75,9 +75,9 @@
     {% endfor %}
     <tr>
         <td colspan="3"><strong>TOTAL</strong></td>
-        <td><strong>${{ invoice.get_amount() }}</strong></td>
+        <td><strong>${{ invoice.amount }}</strong></td>
     </tr>
 </table>
 
-{{ invoice.get_biller_details()|safe }}
+{{ invoice.biller_details|safe }}
 </body>

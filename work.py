@@ -20,7 +20,7 @@ def api_log_item():
 def api_log_invoice():
     invoice = Invoice.create(request.form.get('date'), request.form.get('payer'),
                              request.form.get('payee'), request.form.getlist('items'))
-    return redirect('/invoice/{}'.format(invoice.get_id()))
+    return redirect('/invoice/{}'.format(invoice.id))
 
 @app.route('/statistics')
 def invoice_stats():
