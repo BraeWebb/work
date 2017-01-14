@@ -67,10 +67,10 @@
     </tr>
     {% for item in invoice.items %}
         <tr>
-        <td>{{ item.get_date() }}</td>
-        <td>{{ item.get_id() }}</td>
-        <td>{{ item.get_description() }}</td>
-        <td>{{ item.get_amount() }}</td>
+        <td>{{ item.date }}</td>
+        <td>{{ item.code }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.amount }}</td>
         </tr>
     {% endfor %}
     <tr>
