@@ -24,22 +24,22 @@
         {% for invoice in invoices %}
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Invoice {{ invoice.get_name() }}
+                    Invoice {{ invoice.name }}
                     <div class="btn-group btn-group-xs pull-right">
-                        <a type="button" href="/invoice/{{ invoice.get_id() }}" class="btn btn-default"><span class="glyphicon glyphicon-link"></span></a>
-                        <a type="button" href="/invoice/{{ invoice.get_id() }}.pdf" class="btn btn-default"><span class="glyphicon glyphicon-file"></span></a>
-                        <a type="button" href="/invoice/{{ invoice.get_id() }}/download" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></a>
-                        <a type="button" href="/invoice/{{ invoice.get_id() }}/email" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.id }}" class="btn btn-default"><span class="glyphicon glyphicon-link"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.id }}.pdf" class="btn btn-default"><span class="glyphicon glyphicon-file"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.id }}/download" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></a>
+                        <a type="button" href="/invoice/{{ invoice.id }}/email" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span></a>
                     </div>
                 </div>
                 <div class="panel-body">
-                    Date: {{ invoice.get_date() }} <br/>
-                    Amount: ${{ invoice.get_amount() }} <br/>
-                    Payer: {{ invoice.get_payer() }} <br/>
-                    Payee: {{ invoice.get_payee() }} <br/>
+                    Date: {{ invoice.date }} <br/>
+                    Amount: ${{ invoice.amount }} <br/>
+                    Payer: {{ invoice.payer }} <br/>
+                    Payee: {{ invoice.payee }} <br/>
                 </div>
                 <ul class="list-group">
-                    {% for item in invoice.get_items()|sort(reverse = True) %}
+                    {% for item in invoice.items|sort(reverse = True) %}
                         <li class="list-group-item">
                             <span class="label label-success">${{ item.get_amount() }}</span>
                             <span class="badge">{{ item.get_date() }}</span>
