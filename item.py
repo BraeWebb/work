@@ -23,7 +23,7 @@ class Item(object):
                 raise KeyError('No item with item code of {} exists within the database'.format(self.code))
 
     @staticmethod
-    def _generate_code(self):
+    def _generate_code():
         import random, string
         return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
 
