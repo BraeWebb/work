@@ -43,6 +43,12 @@ class Item(object):
             db.query(sql, id, date, description, charge)
         return cls(id)
 
+    def delete(self):
+        """Delete an item from the database"""
+        with database() as db:
+            sql = 'DELETE FROM items WHERE item_code = %s'
+            db.query(sql, self.code)
+
     @staticmethod
     def get_all():
         """Retrieve an instance of all items that are currently stored in the database"""
