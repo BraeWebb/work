@@ -47,12 +47,12 @@
 <table id="paypeople">
     <tr>
         <td>
-            <h3>Payer: {{ invoice.payer }}</h3>
-            <p>{{ invoice.payer.get_address() }}</p>
+            <h3>Payer: {{ invoice.payer.name }}</h3>
+            <p>{{ invoice.payer.address }}</p>
         </td>
         <td>
-            <h3>Payee: {{ invoice.payee }}</h3>
-            <p>{{ invoice.payee.get_address() }}</p>
+            <h3>Payee: {{ invoice.payee.name }}</h3>
+            <p>{{ invoice.payee.address }}</p>
         </td>
     </tr>
 </table>
