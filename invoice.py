@@ -104,14 +104,14 @@ class Invoice(object):
         self.build_pdf()
         with open(self.pdf_file, 'rb') as pdf:
             return pdf.read(), 200, {'Content-Type': 'application/pdf',
-                                     'Content-Disposition': 'inline; filename="{}.pdf"'.format(self.name)}
+                                     'Content-Disposition': 'inline; filename="Invoice #{}.pdf"'.format(self.name)}
 
     def download(self):
         """Builds and opens the PDF file of the invoice and returns it's bytes in a http attachment format"""
         self.build_pdf()
         with open(self.pdf_file, 'rb') as pdf:
             return pdf.read(), 200, {'Content-Type': 'application/pdf',
-                                     'Content-Disposition': 'attachment; filename="{}.pdf"'.format(self.name)}
+                                     'Content-Disposition': 'attachment; filename="Invoice #{}.pdf"'.format(self.name)}
 
     def html(self):
         """Renders the invoice html template providing the details of the invoice"""
