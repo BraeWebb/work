@@ -65,7 +65,7 @@
         <th>Description of Service</th>
         <th>Charge</th>
     </tr>
-    {% for item in invoice.items %}
+    {% for item in invoice.items|sort() %}
         <tr>
         <td>{{ item.date }}</td>
         <td>{{ item.code }}</td>
