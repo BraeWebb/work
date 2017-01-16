@@ -26,6 +26,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>Payer:</label>
                 <select class="form-control" name="payer">
                     {% for person in people %}
                         <option value="{{ person.name }}">{{ person.name }}</option>
@@ -33,6 +34,7 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>Payee:</label>
                 <select class="form-control" name="payee">
                     {% for person in people %}
                         <option value="{{ person.name }}">{{ person.name }}</option>
