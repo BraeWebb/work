@@ -38,15 +38,23 @@ class Invoice(object):
         self.payer, self.payee = Person(self.payer), Person(self.payee)
         self.name = '{:04d}'.format(self.id)
 
+    @staticmethod
+    def get_invoice_count():
+        """Returns the total amount of invoices in the database"""
+        with database() as db:
+            return db.query('SELECT COUNT(*) FROM invoices')[0][0]
 
     @staticmethod
-    def get_all():
+    def get_all(start=1, end=None):
         """Retrieve all the invoices that are stored in the database
+        If start and end are specified it will only retrieve that range of invoices from the database
 
         Returns a list of Invoice instances
         """
+        if end is None:
+            end = Invoice.get_invoice_count()
         with database() as db:
-            return [ Invoice(inv_id[0]) for inv_id in db.query('SELECT invoice_number FROM invoices') ]
+            return [ Invoice(inv_id) for inv_id in range(start + 1, end + 1) ]
 
     @classmethod
     def create(cls, date, payer, payee, items):

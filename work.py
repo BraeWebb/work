@@ -6,9 +6,18 @@ from datetime import date
 app = Flask(__name__)
 
 
-@app.route('/invoices')
-def invoices():
-    return render_template('invoices.html', invoices=reversed(Invoice.get_all()))
+@app.route('/invoices', defaults={'page': 1})
+@app.route('/invoices/page/<int:page>')
+def invoices(page):
+    invoices_per_page = 5
+    invoice_count =Invoice.get_invoice_count()
+    page_count = invoice_count // invoices_per_page + int(invoice_count % invoices_per_page > 0)
+
+    start = max(invoice_count - (page*invoices_per_page), 0)
+    end = max(invoice_count - ((page-1)*invoices_per_page), 0)
+
+    return render_template('invoices.html', invoices=list(reversed(Invoice.get_all(start=start, end=end))),
+                           page_count=page_count, page=page)
 
 @app.route('/api/log/item', methods=['POST'])
 def api_log_item():
