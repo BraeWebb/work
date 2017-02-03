@@ -74,8 +74,12 @@ class Invoice(object):
         self.delete_pdf()
 
     @property
-    def biller_details(self):
-        return config.biller_details
+    def payment_details(self):
+        return config.payment_details
+        
+    @property
+    def abn(self):
+        return config.abn
 
     @property
     def items(self):

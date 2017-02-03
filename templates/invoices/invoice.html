@@ -25,7 +25,6 @@
         padding-top: 10px;
     }
     td{
-        border-right: 1px black solid;
         padding-top: 5px;
     }
 
@@ -56,28 +55,47 @@
         </td>
     </tr>
 </table>
-<h4>No GST Applied</h4>
+
+<br/>
 
 <table id="items">
     <tr>
         <th>Date</th>
-        <th>Item Code</th>
         <th>Description of Service</th>
         <th>Charge</th>
     </tr>
     {% for item in invoice.items|sort() %}
         <tr>
         <td>{{ item.date }}</td>
-        <td>{{ item.code }}</td>
         <td>{{ item.description }}</td>
         <td>{{ item.amount }}</td>
         </tr>
     {% endfor %}
     <tr>
-        <td colspan="3"><strong>TOTAL</strong></td>
+        <td colspan="2"><strong>TOTAL</strong></td>
         <td><strong>${{ invoice.amount }}</strong></td>
     </tr>
 </table>
 
-{{ invoice.biller_details|safe }}
+<br/>
+
+<table>
+	<tr>
+		<td><h4>ABN: {{ invoice.abn }}</h4></td>
+		<td><h4>No GST Applied</h4></td>
+	</tr>
+</table>
+
+<br/>
+
+<table id="items">
+	<tr>
+		<th>Payment Details</th>
+	</tr>
+	<tr>
+		<td>
+			{{ invoice.payment_details|safe }}
+		</td>
+	</tr>
+</table>
 </body>
