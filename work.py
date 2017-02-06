@@ -31,6 +31,11 @@ def api_log_invoice():
                              request.form.get('payee'), request.form.getlist('items'))
     return redirect('/invoice/{}'.format(invoice.id))
 
+@app.route('/api/invoice/<invoice>/delete')
+def api_delete_invoice(invoice):
+    Invoice(invoice).delete()
+    return 'Deleted'
+
 @app.route('/statistics')
 def invoice_stats():
     return render_template('statistics.html')

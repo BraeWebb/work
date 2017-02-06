@@ -77,8 +77,11 @@ class Invoice(object):
     def delete(self):
         """Remove the invoice from the database and it's links to items"""
         with database() as db:
+            items = db.query('SELECT item_code FROM invoice_items WHERE invoice_number = %s', self.id)
             db.query('DELETE FROM invoice_items WHERE invoice_number = %s', self.id)
             db.query('DELETE FROM invoices WHERE invoice_number = %s', self.id)
+            for item in items:
+                db.query('DELETE FROM items WHERE item_code = %s', item[0])
         self.delete_pdf()
 
     @property
