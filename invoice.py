@@ -139,7 +139,7 @@ class Invoice(object):
         - Body: the body parameter provided
         """
         self.build_pdf()
-        with Email(self.payer.get_email(), self.payee.get_email(), 'Invoice {}'.format(self.name)) as email:
+        with Email(self.payer.email, self.payee.email, 'Invoice {}'.format(self.name)) as email:
             email.attach_pdf(self.pdf_file, 'Invoice #{}'.format(self.name))
             email.set_body(body)
             email.send()
@@ -150,10 +150,18 @@ class Invoice(object):
         """Builds a pylab plot with information about all invoices in the database"""
         dates = []
         costs = []
+        pylab.xkcd()
         pylab.figure()
         for invoice in Invoice.get_all():
-            dates.append(invoice.date)
+            dates.append(invoice.id)
             costs.append(invoice.amount)
         pylab.legend(('Invoice Amounts', ))
-        pylab.plot(dates, costs)
+        pylab.plot(dates, costs, marker='o', label='Charge')
+        pylab.xlabel('Invoice Number')
+        pylab.ylabel('Money')
+        pylab.legend(loc=2)
+        ax = pylab.axes()
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.tick_params(axis=u'both', which=u'both', length=0)
         return pylab
