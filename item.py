@@ -66,6 +66,15 @@ class Item(object):
         """The __lt__ magic method allows items to be sorted according to their date"""
         return self.date < other.date
 
+    def dict(self):
+        """Return the dictionary representation of the item"""
+        return {
+            'code': self.code,
+            'date': self.date,
+            'description': self.description,
+            'amount': self.amount,
+        }
+
     @staticmethod
     def statistics():
         """Generate a pylab figure demonstrating the amount charged for each item over time"""

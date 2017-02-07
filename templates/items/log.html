@@ -6,6 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -17,27 +18,85 @@
         <div class="page-header">
             <h1>Log Item</h1>
         </div>
-        <form class="form-horizontal" action="/api/log/item" method="post">
+        <form class="form-horizontal log-item-form">
             <div class="form-group">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon glyphicon glyphicon-calendar"></span>
-                    <input type="text" class="form-control" name="date" placeholder="Date" value="{{ date }}">
+                    <input type="text" class="form-control log-item-date" name="date" placeholder="Date" value="{{ date }}">
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon glyphicon glyphicon-pencil"></span>
-                    <input type="text" class="form-control" name="description" placeholder="Description" value="Initialize and Test Hardware for Dexus Place">
+                    <input type="text" class="form-control log-item-description" name="description" placeholder="Description" value="Initialize and Test Hardware for Dexus Place">
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">$</span>
-                    <input type="text" class="form-control" name="charge" placeholder="Charge" value=70>
+                    <input type="text" class="form-control log-item-charge" name="charge" placeholder="Charge" value=70>
                 </div>
             </div>
             <button type="submit" class="btn btn-lg btn-primary btn-block">Log</button>
         </form>
     </div>
+
+    <style>
+        .snackbar {
+            position: fixed;
+            bottom: 5px;
+            left: 20px;
+        }
+    </style>
+
+    <script>
+        $('.log-item-form').submit(function(e){
+            e.preventDefault();
+            date = $('.log-item-date').val();
+            description = $('.log-item-description').val();
+            charge = $('.log-item-charge').val();
+            $.ajax({
+                method: "POST",
+                url: "/api/item",
+                data: { date: date, description: description, charge: charge }
+            }).done(function(data){
+                loadItemCreateAlert(data);
+            });
+        });
+
+        $('body').on("click", "div .undo-item-btn", function (e) {
+            e.preventDefault();
+            code = $(this).data('code');
+            console.log('Deleting '+ code);
+            $(this).parent().remove();
+            $.ajax({
+                method: "DELETE",
+                url: "/api/item",
+                data: { code: code }
+            }).done(function(data){
+                loadItemDeleteAlert(data['item']);
+            });
+        });
+
+        function loadItemCreateAlert(data){
+            div = $('<div></div>').addClass('alert alert-success alert-dismissible snackbar fade in');
+            content = '<strong>Success!</strong> Logged '+data['description']+' <button type="button" class="btn btn-link btn-xs undo-item-btn" data-code='+data['code']+'>Undo</button>';
+            div.append($(content));
+            $(document.body).append(div);
+            setTimeout(function () {
+                div.remove();
+            }, 5000);
+        }
+
+        function loadItemDeleteAlert(data){
+            div = $('<div></div>').addClass('alert alert-success alert-dismissible snackbar fade in');
+            content = '<strong>Success!</strong> <span>'+data['description']+' has been removed.</span>';
+            div.append($(content));
+            $(document.body).append(div);
+            setTimeout(function () {
+                div.remove();
+            }, 5000);
+        }
+    </script>
 </body>
 </html>

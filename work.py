@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 from invoice import Invoice, Item, Person
 from datetime import date
@@ -19,10 +19,16 @@ def invoices(page):
     return render_template('invoices.html', invoices=list(reversed(Invoice.get_all(start=start, end=end))),
                            page_count=page_count, page=page)
 
-@app.route('/api/log/item', methods=['POST'])
+@app.route('/api/item', methods=['POST'])
 def api_log_item():
     item = Item.create(request.form.get('date'), request.form.get('description'), request.form.get('charge'))
-    return redirect(url_for('log_invoice'))
+    return jsonify(**item.dict())
+
+@app.route('/api/item', methods=['DELETE'])
+def api_delete_item():
+    item = Item(request.form.get('code'))
+    item.delete()
+    return jsonify(error=False, item=item.dict())
 
 
 @app.route('/api/log/invoice', methods=['POST'])
