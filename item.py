@@ -62,6 +62,19 @@ class Item(object):
             sql = 'SELECT item_code FROM items WHERE item_code NOT IN (SELECT item_code FROM invoice_items)'
             return [Item(item[0]) for item in db.query(sql)]
 
+    def update(self, date=None, description=None, charge=None):
+        """Update the values of the attributes which are not empty or None"""
+        with database() as db:
+            if date:
+                db.query('UPDATE items SET date = %s where item_code = %s', date, self.code)
+                self.date = date
+            if description:
+                db.query('UPDATE items SET description = %s where item_code = %s', description, self.code)
+                self.description = description
+            if charge:
+                db.query('UPDATE items SET charge = %s where item_code = %s', charge, self.code)
+                self.amount = charge
+
     def __lt__(self, other):
         """The __lt__ magic method allows items to be sorted according to their date"""
         return self.date < other.date

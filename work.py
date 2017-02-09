@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, abort
 
 from invoice import Invoice, Item, Person
 from datetime import date
@@ -22,14 +22,37 @@ def invoices(page):
 @app.route('/api/item', methods=['POST'])
 def api_log_item():
     item = Item.create(request.form.get('date'), request.form.get('description'), request.form.get('charge'))
+    return jsonify(**item.dict()), 201
+
+@app.route('/api/item', methods=['GET'])
+def api_view_items():
+    return jsonify([item.dict() for item in Item.get_all()])
+
+@app.route('/api/item/<item>', methods=['GET'])
+def api_view_item(item):
+    try:
+        item = Item(item)
+    except KeyError:
+        abort(404)
     return jsonify(**item.dict())
 
-@app.route('/api/item', methods=['DELETE'])
-def api_delete_item():
-    item = Item(request.form.get('code'))
+@app.route('/api/item/<item>', methods=['PUT'])
+def api_edit_item(item):
+    try:
+        item = Item(item)
+    except KeyError:
+        abort(404)
+    item.update(date=request.form.get('date'), description=request.form.get('description'), charge=request.form.get('charge'))
+    return jsonify(**item.dict())
+
+@app.route('/api/item/<item>', methods=['DELETE'])
+def api_delete_item(item):
+    try:
+        item = Item(item)
+    except KeyError:
+        abort(404)
     item.delete()
     return jsonify(error=False, item=item.dict())
-
 
 @app.route('/api/log/invoice', methods=['POST'])
 def api_log_invoice():

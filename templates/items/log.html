@@ -71,8 +71,7 @@
             $(this).parent().remove();
             $.ajax({
                 method: "DELETE",
-                url: "/api/item",
-                data: { code: code }
+                url: "/api/item/" + code
             }).done(function(data){
                 loadItemDeleteAlert(data['item']);
             });
