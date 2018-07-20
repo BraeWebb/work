@@ -65,6 +65,32 @@ def api_delete_invoice(invoice):
     Invoice(invoice).delete()
     return 'Deleted'
 
+@app.route('/people', defaults={'page': 1})
+@app.route('/people/page/<int:page>')
+def people(page):
+    people_per_page = 10
+    people = Person.get_all()
+    people_count = len(people)
+
+    page_count = len(people) // people_per_page + int(len(people) % people_per_page > 0)
+
+    start = max(people_count - (page*people_per_page), 0)
+    end = max(people_count - ((page-1)*people_per_page), 0)
+
+    return render_template('people.html', people=list(people),
+                           page_count=page_count, page=page)
+
+@app.route('/api/person', methods=['POST'])
+def api_add_contact():
+    person = Person.create(request.form.get('name'), request.form.get('email'),
+                           request.form.get('address'))
+    return person.name
+
+@app.route('/api/person/<person>/delete')
+def api_delete_person(person):
+    Person(person).delete()
+    return 'Deleted'
+
 @app.route('/statistics')
 def invoice_stats():
     return render_template('statistics.html')
@@ -99,6 +125,7 @@ app.add_url_rule('/invoice/<invoice>/download', 'download_invoice_pdf', lambda i
 app.add_url_rule('/invoice/<invoice>/email', 'email_invoice', render('invoices/email.html', invoice=Invoice))
 app.add_url_rule('/item/log', 'log_item', lambda: render_template('items/log.html', date=date.today()))
 app.add_url_rule('/invoice/log', 'log_invoice', lambda: render_template('invoices/log.html', date=date.today(), people=Person.get_all(), items=Item.get_unlogged()))
+app.add_url_rule('/people/add', 'add_contact', lambda: render_template('people/add.html',))
 app.add_url_rule('/api/email/invoice/<invoice>', 'send_email_invoice', lambda invoice: Invoice(invoice).email(request.form.get('body')), methods=['POST'])
 
 if __name__ == '__main__':

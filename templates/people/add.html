@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Contact</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/people">People</a></li>
+            <li class="active">Add</li>
+        </ol>
+        <div class="page-header">
+            <h1>Add Contact</h1>
+        </div>
+        <form class="form-horizontal add-contact-form">
+            <div class="form-group">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon glyphicon glyphicon-user"></span>
+                    <input type="text" class="form-control add-contact-name" name="name" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon glyphicon glyphicon-envelope"></span>
+                    <input type="text" class="form-control add-contact-email" name="email" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon glyphicon glyphicon-home"></span>
+                    <input type="text" class="form-control add-contact-address" name="charge" placeholder="Address">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Add</button>
+        </form>
+    </div>
+
+    <style>
+        .snackbar {
+            position: fixed;
+            bottom: 5px;
+            left: 20px;
+        }
+    </style>
+
+    <script>
+        $('.add-contact-form').submit(function(e){
+            e.preventDefault();
+            var fullname = $('.add-contact-name').val();
+            var email = $('.add-contact-email').val();
+            var address = $('.add-contact-address').val();
+            $.ajax({
+                method: "POST",
+                url: "/api/person",
+                data: { name: fullname, email: email, address: address }
+            }).done(function(data){
+                loadItemCreateAlert(data);
+            });
+        });
+
+        {#$('body').on("click", "div .undo-item-btn", function (e) {#}
+        {#    e.preventDefault();#}
+        {#    code = $(this).data('code');#}
+        {#    console.log('Deleting '+ code);#}
+        {#    $(this).parent().remove();#}
+        {#    $.ajax({#}
+        {#        method: "DELETE",#}
+        {#        url: "/api/item/" + code#}
+        {#    }).done(function(data){#}
+        {#        loadItemDeleteAlert(data['item']);#}
+        {#    });#}
+        {#});#}
+        {##}
+        function loadItemCreateAlert(data){
+            div = $('<div></div>').addClass('alert alert-success alert-dismissible snackbar fade in');
+            content = '<strong>Success!</strong> '+data['name'] + ' added!';
+            div.append($(content));
+            $(document.body).append(div);
+            setTimeout(function () {
+                div.remove();
+            }, 5000);
+        }
+        {##}
+        {#function loadItemDeleteAlert(data){#}
+        {#    div = $('<div></div>').addClass('alert alert-success alert-dismissible snackbar fade in');#}
+        {#    content = '<strong>Success!</strong> <span>'+data['description']+' has been removed.</span>';#}
+        {#    div.append($(content));#}
+        {#    $(document.body).append(div);#}
+        {#    setTimeout(function () {#}
+        {#        div.remove();#}
+        {#    }, 5000);#}
+        {#}#}
+    </script>
+</body>
+</html>
