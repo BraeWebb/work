@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 import config
 
@@ -88,3 +89,76 @@ class database:
     def __del__(self):
         """Closes all connections to the database when the object is deleted"""
         self.close()
+
+
+def create_invoice_items(connection):
+    connection.query("""CREATE TABLE invoice_items (item_code text NOT NULL,
+                        invoice_number integer NOT NULL);""")
+
+
+def create_invoices(connection):
+    connection.query("""CREATE TABLE invoices (invoice_number integer NOT NULL,
+                        date date NOT NULL, 
+                        payer text NOT NULL, 
+                        payee text NOT NULL);""")
+
+
+def create_items(connection):
+    connection.query("""CREATE TABLE items (
+                        item_code text NOT NULL,
+                        date date NOT NULL,
+                        description text NOT NULL,
+                        charge double precision NOT NULL);""")
+
+
+def create_persons(connection):
+    connection.query("""CREATE TABLE persons (
+                        person_name text NOT NULL,
+                        address text NOT NULL,
+                        email text NOT NULL);""")
+
+
+def create_tables(connection):
+    create_invoice_items(connection)
+    create_invoices(connection)
+    create_items(connection)
+    create_persons(connection)
+
+
+def create_database(connection):
+    connection.query("CREATE DATABASE work")
+    create_tables(connection)
+
+
+def tables_exist(connection):
+    for table in ("invoice_items", "invoices", "items", "persons"):
+        try:
+            connection.exists(table)
+        except psycopg2.ProgrammingError:
+            return False
+    return True
+
+
+def database_exists():
+    try:
+        test_connection_db = database()
+        test_connection_db.close()
+        return True
+    except psycopg2.OperationalError:
+        return False
+
+
+if __name__ == "__main__":
+    if not database_exists():
+        tmp = config.postgres_database
+        config.postgres_database = 'postgres'
+        with database() as connection:
+            connection.db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            create_database(connection)
+        config.postgres_database = tmp
+
+    test_connection = database()
+    if not tables_exist(test_connection):
+        with database() as connection:
+            create_tables(connection)
+    test_connection.close()
