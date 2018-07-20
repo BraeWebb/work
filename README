@@ -1,0 +1,18 @@
+# Invoice System
+This is a system to lodge and manage invoices.
+
+## Requirements
+* PostgreSQL server with permissions to create databases and tables
+
+## Installation
+### Configuration File
+1. Copy the template_config.py to config.py
+2. Fill out the information to connect to the PostgreSQL server
+
+### Database Setup
+1. Ensure that the configuration file has been configured correctly
+2. Run database.py to create a new database and required tables
+
+## Running
+To run the server simply run the work.py file
+To run the server in development first run the command `export FLASK_ENV=development`
