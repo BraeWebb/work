@@ -1,8 +1,10 @@
-import config
 import smtplib
-from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+import config
+
 
 class Email(object):
     def __init__(self, _to, _from, _subject):

@@ -1,7 +1,8 @@
+from os import remove as os_remove
+
 import pylab
 from flask import render_template
 from xhtml2pdf.pisa import CreatePDF
-from os import remove as os_remove
 
 import config
 from database import database
@@ -17,6 +18,7 @@ class Invoice(object):
 
     This class provides an interface to the invoice model stored in the database
     """
+
     def __init__(self, invoice_id):
         """Initializes an Invoice based on the given invoice_id
 
@@ -54,7 +56,7 @@ class Invoice(object):
         if end is None:
             end = Invoice.get_invoice_count()
         with database() as db:
-            return [ Invoice(inv_id) for inv_id in range(start + 1, end + 1) ]
+            return [Invoice(inv_id) for inv_id in range(start + 1, end + 1)]
 
     @classmethod
     def create(cls, date, payer, payee, items):
@@ -87,7 +89,7 @@ class Invoice(object):
     @property
     def payment_details(self):
         return config.payment_details
-        
+
     @property
     def abn(self):
         return config.abn
@@ -158,7 +160,7 @@ class Invoice(object):
         for invoice in Invoice.get_all():
             dates.append(invoice.id)
             costs.append(invoice.amount)
-        pylab.legend(('Invoice Amounts', ))
+        pylab.legend(('Invoice Amounts',))
         pylab.plot(dates, costs, marker='o', label='Charge')
         pylab.xlabel('Invoice Number')
         pylab.ylabel('Money')

@@ -1,6 +1,7 @@
+import pylab
+
 from database import database
 
-import pylab
 
 class Item(object):
     """An Item identified by the item code and stored within the database
@@ -10,13 +11,14 @@ class Item(object):
 
     This class provides an interface to the item model stored in the database
     """
+
     def __init__(self, item_code):
         """Initialize the class variables including the item code provided in the constructor and the date, description
         and amount retrieved from the database
         """
         self.code = item_code
         with database() as db:
-            if db.exists('items', item_code = self.code):
+            if db.exists('items', item_code=self.code):
                 sql = 'SELECT date, description, charge FROM items WHERE item_code = %s'
                 self.date, self.description, self.amount = db.query(sql, self.code, limit=1)[0]
             else:
@@ -35,7 +37,7 @@ class Item(object):
         with database() as db:
             # Generate a new item code until one is generated which is not already in use
             id = cls._generate_code()
-            while db.exists('items', item_code = id):
+            while db.exists('items', item_code=id):
                 id = cls._generate_code()
 
             # Insert the new item into the database
@@ -97,6 +99,6 @@ class Item(object):
         for item in sorted(Item.get_all()):
             dates.append(item.date)
             costs.append(item.amount)
-        pylab.legend(('Item Charges', ))
+        pylab.legend(('Item Charges',))
         pylab.plot(dates, costs)
         return pylab
