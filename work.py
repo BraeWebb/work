@@ -7,6 +7,13 @@ from invoice import Invoice, Item, Person
 app = Flask(__name__)
 
 
+def format_date(value):
+    return value.strftime('%a %d %b \'%y')
+
+
+app.jinja_env.filters['date'] = format_date
+
+
 @app.route('/')
 def index():
     return render_template('index.html', jobs=Item.get_unlogged(),

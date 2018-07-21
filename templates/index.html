@@ -42,7 +42,7 @@
             {% for item in jobs|sort(reverse = True) %}
                 <li class="list-group-item">
                     <span class="label label-success">${{ item.amount }}</span>
-                    <span class="badge">{{ item.date }}</span>
+                    <span class="badge">{{ item.date|date }}</span>
                     {{ item.description }}
                 </li>
             {% endfor %}
@@ -56,7 +56,7 @@
             Last Invoice #{{ last.name }}
         </div>
         <div class="panel-body">
-            Date: {{ last.date }} <br/>
+            Date: {{ last.date|date }} <br/>
             Amount: ${{ last.amount }} <br/>
             Payer: {{ last.payer.name }} <br/>
             Payee: {{ last.payee.name }} <br/>
@@ -65,7 +65,7 @@
             {% for item in last.items|sort(reverse = True) %}
                 <li class="list-group-item">
                     <span class="label label-success">${{ item.amount }}</span>
-                    <span class="badge">{{ item.date }}</span>
+                    <span class="badge">{{ item.date|date }}</span>
                     {{ item.description }}
                 </li>
             {% endfor %}

@@ -22,7 +22,7 @@
             </h1>
         </div>
         {% if not invoices %}
-                <h3 style="font-family: sans-serif; color: #555; font-size: 2em; font-weight: 400; text-align: center;">Oops no more invoices left</h3>
+                <h3 style="font-family: sans-serif; color: #555; font-size: 2em; font-weight: 400; text-align: center;">No Invoices</h3>
         {% endif %}
         {% for invoice in invoices %}
             <div class="panel panel-default">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    Date: {{ invoice.date }} <br/>
+                    Date: {{ invoice.date|date }} <br/>
                     Amount: ${{ invoice.amount }} <br/>
                     Payer: {{ invoice.payer.name }} <br/>
                     Payee: {{ invoice.payee.name }} <br/>
@@ -46,7 +46,7 @@
                     {% for item in invoice.items|sort(reverse = True) %}
                         <li class="list-group-item">
                             <span class="label label-success">${{ item.amount }}</span>
-                            <span class="badge">{{ item.date }}</span>
+                            <span class="badge">{{ item.date|date }}</span>
                             {{ item.description }}
                         </li>
                     {% endfor %}
