@@ -47,6 +47,13 @@ class Invoice(object):
             return db.query('SELECT COUNT(*) FROM invoices')[0][0]
 
     @staticmethod
+    def get_last_invoice():
+        """Returns the last lodged invoice"""
+        with database() as db:
+            if db.exists('invoices'):
+                return Invoice(db.query("SELECT MAX(invoice_number) FROM invoices")[0][0])
+
+    @staticmethod
     def get_all(start=1, end=None):
         """Retrieve all the invoices that are stored in the database
         If start and end are specified it will only retrieve that range of invoices from the database
@@ -63,7 +70,8 @@ class Invoice(object):
         """Insert a new invoice into the database and return the instance"""
         with database() as db:
             # Calculate the next invoice id
-            id = int(db.query('SELECT MAX(invoice_number) FROM invoices')[0][0]) + 1
+            max = db.query('SELECT MAX(invoice_number) FROM invoices')[0][0]
+            id = int(max) + 1 if max is not None else 1
 
             sql = 'INSERT INTO invoices (invoice_number, date, payer, payee) VALUES (%s, %s, %s, %s)'
             db.query(sql, id, date, payer, payee)

@@ -7,6 +7,13 @@ from invoice import Invoice, Item, Person
 app = Flask(__name__)
 
 
+@app.route('/')
+def index():
+    return render_template('index.html', jobs=Item.get_unlogged(),
+                           last=Invoice.get_last_invoice(),
+                           contacts=Person.get_all())
+
+
 @app.route('/invoices', defaults={'page': 1})
 @app.route('/invoices/page/<int:page>')
 def invoices(page):
