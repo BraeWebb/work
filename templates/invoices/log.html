@@ -27,19 +27,25 @@
             </div>
             <div class="form-group">
                 <label>Payer:</label>
-                <select class="form-control" name="payer">
-                    {% for person in people %}
-                        <option value="{{ person.name }}">{{ person.name }}</option>
-                    {% endfor %}
-                </select>
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-user"></span>
+                    <select class="form-control" name="payer">
+                        {% for person in people %}
+                            <option value="{{ person.name }}">{{ person.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label>Payee:</label>
-                <select class="form-control" name="payee">
-                    {% for person in people %}
-                        <option value="{{ person.name }}">{{ person.name }}</option>
-                    {% endfor %}
-                </select>
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-user"></span>
+                    <select class="form-control" name="payee">
+                        {% for person in people %}
+                            <option value="{{ person.name }}">{{ person.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             {% for item in items %}
                 <div class="checkbox">

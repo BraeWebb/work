@@ -26,7 +26,7 @@ class Invoice(object):
         """
         self.id = int(invoice_id)
         # The location where the pdf copy of this invoice will be stored if generated
-        self.pdf_file = 'invoices/{}.pdf'.format(self.id)
+        self.pdf_file = 'pdfs/{}.pdf'.format(self.id)
 
         with database() as db:
             if db.exists('invoices', invoice_number=self.id):

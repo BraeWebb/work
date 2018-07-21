@@ -83,7 +83,7 @@ def api_log_invoice():
     return redirect('/invoice/{}'.format(invoice.id))
 
 
-@app.route('/api/invoice/<invoice>/delete')
+@app.route('/api/invoice/<invoice>', methods=['DELETE'])
 def api_delete_invoice(invoice):
     Invoice(invoice).delete()
     return 'Deleted'
@@ -154,7 +154,6 @@ def render(url, **funcs):
 app.add_url_rule('/invoice/<invoice>', 'view_invoice', lambda invoice: Invoice(invoice).html())
 app.add_url_rule('/invoice/<invoice>.pdf', 'view_invoice_pdf', lambda invoice: Invoice(invoice).pdf())
 app.add_url_rule('/invoice/<invoice>/download', 'download_invoice_pdf', lambda invoice: Invoice(invoice).download())
-app.add_url_rule('/invoice/<invoice>/email', 'email_invoice', render('invoices/email.html', invoice=Invoice))
 app.add_url_rule('/item/log', 'log_item', lambda: render_template('items/log.html', date=date.today()))
 app.add_url_rule('/invoice/log', 'log_invoice',
                  lambda: render_template('invoices/log.html', date=date.today(), people=Person.get_all(),

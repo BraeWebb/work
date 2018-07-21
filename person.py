@@ -18,7 +18,7 @@ class Person(object):
                 raise KeyError('No person with the name {} exists within the database'.format(self.name))
 
     @classmethod
-    def create(cls, name, address, email):
+    def create(cls, name, email, address):
         """Add a new person to the database if the name is not already in use"""
         with database() as db:
             if not db.exists('persons', person_name=name):

@@ -13,7 +13,7 @@ class Email(object):
         self.msg['To'] = _to
         self.msg['Subject'] = _subject
 
-        self.server = smtplib.SMTP(config.smtp_server, config.smtp_port)
+        self.server = smtplib.SMTP_SSL(config.smtp_server, config.smtp_port)
         self.server.ehlo()
         self.server.login(config.email_login, config.email_password)
 

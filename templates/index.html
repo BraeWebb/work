@@ -31,6 +31,12 @@
                 New Invoice
             </a>
         </div>
+        <div class="btn-group" role="group">
+            <a class="btn btn-default" href="/people/add" role="button">
+                <span class="glyphicon glyphicon-user"></span>
+                New Contact
+            </a>
+        </div>
     </div>
     <p></p>
     {% if jobs|length %}
@@ -79,7 +85,7 @@
                 Contacts
             </div>
             <ul class="list-group">
-                {% for person in contacts|sort(reverse = True) %}
+                {% for person in contacts %}
                     <li class="list-group-item">
                         <span class="glyphicon glyphicon-user"></span>
                         {{ person.name }}

@@ -105,3 +105,6 @@ venv.bak/
 
 # project configuration file
 config.py
+
+# pdf output
+pdfs/
