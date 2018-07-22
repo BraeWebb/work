@@ -37,7 +37,7 @@ class TestInvoice(unittest.TestCase):
 
         Also ensure an error is raised if an invalid ID is used"""
         invoice = Invoice(424)
-        self.assertEqual(invoice.pdf_file, 'invoices/424.pdf')
+        self.assertEqual(invoice.pdf_file, 'pdfs/424.pdf')
         self.assertEqual(invoice.date, datetime.date(1990, 2, 5))
         # TODO: After implementation of __eq__ in Person
         # self.assertEqual(invoice.payer, Person('test_payer'))

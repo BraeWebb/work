@@ -34,7 +34,7 @@ class TestItem(unittest.TestCase):
 
     def test_create(self):
         """Ensure that the create method correctly modifies the database with the new data"""
-        person = Person.create('created_person', '125 Fake Street', 'create@example.com')
+        person = Person.create('created_person', 'create@example.com', '125 Fake Street')
         with database() as db:
             results = db.query("SELECT * FROM persons WHERE person_name = 'created_person'")
             self.assertEqual(results, [('created_person', '125 Fake Street', 'create@example.com')])
