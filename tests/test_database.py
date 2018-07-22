@@ -20,12 +20,6 @@ class TestDatabase(unittest.TestCase):
         with database() as db:
             db.query('DROP TABLE test_data')
 
-    def test_repr(self):
-        """Ensure that the database object is returning the proper representation"""
-        with database() as db:
-            repr_str = 'Database(database={}, user={})'.format(config.postgres_database, config.postgres_user)
-            self.assertEqual(repr(db), repr_str)
-
     def test_commit(self):
         """Ensure that the database commit method retains the data
 
