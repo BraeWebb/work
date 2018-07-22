@@ -98,9 +98,6 @@ def people(page):
 
     page_count = len(people) // people_per_page + int(len(people) % people_per_page > 0)
 
-    start = max(people_count - (page * people_per_page), 0)
-    end = max(people_count - ((page - 1) * people_per_page), 0)
-
     return render_template('people.html', people=list(people),
                            page_count=page_count, page=page)
 

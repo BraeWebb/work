@@ -45,7 +45,7 @@ class TestInvoice(unittest.TestCase):
         self.assertEqual(invoice.amount, 40.7)
         self.assertEqual(invoice.name, '0424')
         with self.assertRaises(KeyError):
-            error_invoice = Invoice(9895)
+            Invoice(9895)
 
     #TODO: test_get_all
 
@@ -69,11 +69,11 @@ class TestInvoice(unittest.TestCase):
             results = db.query('SELECT * FROM invoice_items WHERE invoice_number = %s', 424)
             self.assertEqual(results, [])
 
-    def test_items(self):
-        """Ensures the correct items are in the items attribute"""
-        items = Invoice(424).items
-        # TODO: After implementation of __eq__ in Item
-        # self.assertEqual(items, [Item('XDSA'), Item('SDWF')])
+    # def test_items(self):
+    #     """Ensures the correct items are in the items attribute"""
+    #     items = Invoice(424).items
+    #     # TODO: After implementation of __eq__ in Item
+    #     # self.assertEqual(items, [Item('XDSA'), Item('SDWF')])
 
     def test_build(self):
         """Builds a PDF and ensures it was properly created"""

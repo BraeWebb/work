@@ -30,11 +30,11 @@ class TestItem(unittest.TestCase):
         self.assertEqual(person.email, 'test@example.com')
 
         with self.assertRaises(KeyError):
-            error_person = Person('fake_person')
+            Person('fake_person')
 
     def test_create(self):
         """Ensure that the create method correctly modifies the database with the new data"""
-        person = Person.create('created_person', 'create@example.com', '125 Fake Street')
+        Person.create('created_person', 'create@example.com', '125 Fake Street')
         with database() as db:
             results = db.query("SELECT * FROM persons WHERE person_name = 'created_person'")
             self.assertEqual(results, [('created_person', '125 Fake Street', 'create@example.com')])

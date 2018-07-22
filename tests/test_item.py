@@ -34,7 +34,7 @@ class TestItem(unittest.TestCase):
         self.assertEqual(item.amount, 23.4)
 
         with self.assertRaises(KeyError):
-            error_item = Item('DEIG')
+            Item('DEIG')
 
     def test_generate(self):
         """Ensure that the generate_code method works by testing properties of the code

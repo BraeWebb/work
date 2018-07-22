@@ -24,8 +24,8 @@ class Email(object):
         self.close()
 
     def set_body(self, body):
-        textPart = MIMEText(body, 'plain')
-        self.msg.attach(textPart)
+        text_part = MIMEText(body, 'plain')
+        self.msg.attach(text_part)
 
     def attach_pdf(self, file, name):
         with open(file, 'rb') as pdf:
